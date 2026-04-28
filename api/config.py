@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 
 ENV_PATH = Path(__file__).resolve().parent / ".env"
-load_dotenv(ENV_PATH)
+load_dotenv(ENV_PATH, override=True)
 
 
 def get_required_env(name: str) -> str:

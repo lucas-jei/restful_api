@@ -5,6 +5,7 @@ A board RESTful API server using FastAPI, SQLAlchemy, and PostgreSQL.
 ## Install
 
 ```bash
+cd api
 uv sync
 ```
 

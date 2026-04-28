@@ -1,0 +1,32 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from api.config import get_csv_env
+from api.database import Base, engine
+from api.models import Post
+from api.routers import auth, posts
+
+
+app = FastAPI(title="Board RESTful Server", version="1.0.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=get_csv_env(
+        "CORS_ALLOW_ORIGINS",
+        "null,http://127.0.0.1:5173,http://localhost:5173",
+    ),
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.include_router(auth.router)
+app.include_router(posts.router)
+
+
+@app.on_event("startup")
+def on_startup() -> None:
+    Base.metadata.create_all(bind=engine)
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}

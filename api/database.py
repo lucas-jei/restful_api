@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
-from api.config import get_required_env
+from config import get_required_env
 
 
 DATABASE_URL = URL.create(

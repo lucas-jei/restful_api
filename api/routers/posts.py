@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
-from api.database import get_db
-from api.dependencies.auth import verify_access_token
-from api.models import Post
-from api.schemas import PostCreate, PostRead, PostUpdate
+from database import get_db
+from dependencies.auth import verify_access_token
+from models import Post
+from schemas import PostCreate, PostRead, PostUpdate
 
 
 router = APIRouter(prefix="/posts", tags=["posts"], dependencies=[Depends(verify_access_token)])

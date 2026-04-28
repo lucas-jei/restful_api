@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from api.config import get_required_env
-from api.dependencies.auth import verify_api_key
-from api.schemas import AccessTokenRead
+from config import get_required_env
+from dependencies.auth import verify_api_key
+from schemas import AccessTokenRead
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])

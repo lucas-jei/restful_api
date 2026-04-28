@@ -2,7 +2,7 @@ from secrets import compare_digest
 
 from fastapi import Header, HTTPException, status
 
-from api.config import get_required_env
+from config import get_required_env
 
 
 def parse_bearer_token(authorization: str | None) -> str:

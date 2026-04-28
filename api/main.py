@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.config import get_csv_env
-from api.database import Base, engine
-from api.models import Post
-from api.routers import auth, posts
+from config import get_csv_env
+from database import Base, engine
+from models import Post
+from routers import auth, posts
 
 
 app = FastAPI(title="Board RESTful Server", version="1.0.0")

@@ -11,7 +11,8 @@ uv sync
 ## Run
 
 ```bash
-uv run uvicorn api.main:app --host 127.0.0.1 --port 3080 --reload
+cd api
+uv run uvicorn main:app --host 127.0.0.1 --port 3080 --reload
 ```
 
 The server runs at `http://127.0.0.1:3080` by default.

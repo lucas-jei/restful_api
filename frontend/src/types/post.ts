@@ -12,3 +12,5 @@ export type CreatePostPayload = {
   author: string;
   content: string;
 };
+
+export type UpdatePostPayload = CreatePostPayload;

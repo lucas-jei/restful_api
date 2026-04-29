@@ -39,6 +39,11 @@ textarea {
   margin: 0 auto;
 }
 
+.board-workspace {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
 .editor-header {
   display: flex;
   align-items: flex-start;
@@ -88,11 +93,72 @@ h2 {
 }
 
 .post-form,
-.result-panel {
+.result-panel,
+.post-list-panel {
   border: 1px solid #d9e1ea;
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 16px 40px rgba(23, 43, 77, 0.08);
+}
+
+.auth-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.posts-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.post-list-panel {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 22px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.post-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-list button {
+  display: grid;
+  width: 100%;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid #d9e1ea;
+  border-radius: 6px;
+  color: #1f2d3d;
+  background: #fbfdff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.post-list button:hover {
+  border-color: #2f7fc1;
+  background: #ffffff;
+}
+
+.post-list span {
+  color: #5a6d82;
+  font-size: 13px;
 }
 
 .post-form {
@@ -175,6 +241,40 @@ h2 {
     opacity 160ms ease;
 }
 
+.secondary-button,
+.danger-button {
+  display: inline-flex;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.secondary-button {
+  border: 1px solid #c9d6e4;
+  color: #274b6d;
+  background: #ffffff;
+}
+
+.danger-button {
+  border: 1px solid #efb7b7;
+  color: #9d2c2c;
+  background: #fff1f1;
+}
+
+.secondary-button:disabled,
+.danger-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.actions.compact {
+  gap: 8px;
+}
+
 .submit-button:hover:not(:disabled) {
   background: #11578e;
   transform: translateY(-1px);
@@ -242,6 +342,121 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.post-content {
+  margin: 0;
+  color: #1f2d3d;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.empty-state {
+  display: grid;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  gap: 18px;
+}
+
+.docs-viewer {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+}
+
+.docs-stack {
+  display: grid;
+  gap: 42px;
+}
+
+.api-doc-section {
+  display: grid;
+  gap: 16px;
+}
+
+.doc-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.api-doc-section h3 {
+  margin: 14px 0 0;
+  color: #1f2d3d;
+  font-size: 18px;
+}
+
+.method-badge {
+  display: inline-flex;
+  min-width: 72px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.method-badge.get {
+  background: #1f7a4d;
+}
+
+.method-badge.post {
+  background: #1769aa;
+}
+
+.method-badge.put {
+  background: #9b5a16;
+}
+
+.method-badge.delete {
+  background: #a53030;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #1f2d3d;
+  background: #ffffff;
+  font-size: 14px;
+}
+
+.doc-table th,
+.doc-table td {
+  padding: 10px 12px;
+  border: 1px solid #1f2d3d;
+  vertical-align: top;
+}
+
+.doc-table th {
+  width: 140px;
+  background: #f1f4f8;
+  font-weight: 900;
+}
+
+.doc-code {
+  overflow-x: auto;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #d9e1ea;
+  border-radius: 4px;
+  color: #1f2d3d;
+  background: #f7f8fa;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+.text-link {
+  color: #1769aa;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 720px) {
   .page-shell {
     padding: 28px 14px;
@@ -260,6 +475,11 @@ h2 {
   }
 
   .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-bar,
+  .posts-layout {
     grid-template-columns: 1fr;
   }
 

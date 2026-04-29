@@ -6,6 +6,10 @@ import PostsPage from "./pages/PostsPage";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: null,
+  },
+  {
+    path: "/guide",
     element: <ApiDocsPage />,
   },
   {

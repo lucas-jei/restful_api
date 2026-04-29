@@ -17,6 +17,11 @@ def get_required_env(name: str) -> str:
     return value.strip()
 
 
+def get_env(name: str, default: str = "") -> str:
+    value = environ.get(name, default)
+    return value.strip()
+
+
 def get_csv_env(name: str, default: str = "") -> list[str]:
     value = environ.get(name, default)
     return [item.strip() for item in value.split(",") if item.strip()]

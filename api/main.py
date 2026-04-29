@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from config import get_csv_env
+from config import get_csv_env, get_env
 from database import Base, engine
 from models import Post
 from routers import auth, posts
 
 
-app = FastAPI(title="Board RESTful Server", version="1.0.0")
+app = FastAPI(title="Board RESTful Server", version="1.0.0", root_path=get_env("ROOT_PATH"))
 app.add_middleware(
     CORSMiddleware,
     allow_origins=get_csv_env(

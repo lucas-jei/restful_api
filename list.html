@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시글 리스트</title>
+    <style>
+      :root {
+        color: #172033;
+        background: #f4f7fb;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 48px 20px;
+        background:
+          linear-gradient(180deg, rgba(42, 92, 152, 0.08), rgba(244, 247, 251, 0) 360px),
+          #f4f7fb;
+      }
+
+      .wrap {
+        width: min(960px, 100%);
+        margin: 0 auto;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 28px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: #4c6f91;
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        color: #152238;
+        font-size: 36px;
+        line-height: 1.16;
+      }
+
+      .chip {
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        padding: 0 12px;
+        border: 1px solid #c9d6e4;
+        border-radius: 6px;
+        color: #274b6d;
+        background: #ffffff;
+        font-family: Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      .toolbar,
+      .list {
+        border: 1px solid #d9e1ea;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 16px 40px rgba(23, 43, 77, 0.08);
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr) auto;
+        gap: 12px;
+        align-items: end;
+        padding: 22px;
+        margin-bottom: 18px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+      }
+
+      .full-row {
+        grid-column: 1 / -1;
+      }
+
+      label span {
+        color: #2b3d52;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      input {
+        width: 100%;
+        height: 44px;
+        padding: 0 14px;
+        border: 1px solid #cbd7e3;
+        border-radius: 6px;
+        color: #162235;
+        background: #fbfdff;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: #2f7fc1;
+        box-shadow: 0 0 0 3px rgba(47, 127, 193, 0.16);
+      }
+
+      button {
+        height: 44px;
+        padding: 0 16px;
+        border: 0;
+        border-radius: 6px;
+        color: #ffffff;
+        background: #1769aa;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.56;
+      }
+
+      .status {
+        margin: 0 0 18px;
+        padding: 12px 14px;
+        border-radius: 6px;
+        font-weight: 700;
+      }
+
+      .status.error {
+        border: 1px solid #f1c6c6;
+        color: #9d2c2c;
+        background: #fff1f1;
+      }
+
+      .status.success {
+        border: 1px solid #b9ddc9;
+        color: #17613a;
+        background: #eef8f2;
+      }
+
+      .list {
+        display: grid;
+        gap: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .post {
+        display: grid;
+        gap: 8px;
+        padding: 18px 22px;
+        border-bottom: 1px solid #e4ebf2;
+      }
+
+      .post:last-child {
+        border-bottom: 0;
+      }
+
+      .post-title {
+        margin: 0;
+        color: #152238;
+        font-size: 20px;
+      }
+
+      .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        color: #5a6d82;
+        font-size: 13px;
+      }
+
+      .post-content {
+        margin: 4px 0 0;
+        color: #26364a;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+
+      .empty {
+        padding: 28px 22px;
+        color: #5a6d82;
+        text-align: center;
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 28px 14px;
+        }
+
+        .header,
+        .toolbar {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="wrap" aria-labelledby="page-title">
+        <div class="header">
+          <div>
+            <p class="eyebrow">Board</p>
+            <h1 id="page-title">게시글 리스트</h1>
+          </div>
+          <span class="chip">GET /api/posts</span>
+        </div>
+
+        <div class="toolbar">
+          <label>
+            <span>토큰 API 주소</span>
+            <input id="authApiBaseUrl" type="text" value="" placeholder="토큰 발급 URL 기준 주소" />
+          </label>
+          <label>
+            <span>API 키</span>
+            <input id="apiKey" type="password" placeholder="API_KEY" autocomplete="off" />
+          </label>
+          <button id="loadButton" type="button">목록 조회</button>
+          <label class="full-row">
+            <span>게시글 리스트 API 주소</span>
+            <input id="postApiBaseUrl" type="text" value="" placeholder="게시글 리스트 URL 기준 주소" />
+          </label>
+        </div>
+
+        <p id="status" class="status" hidden></p>
+        <div id="list" class="list">
+          <div class="empty">API 키를 입력하고 목록을 조회하세요.</div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const authApiBaseUrlInput = document.querySelector("#authApiBaseUrl");
+      const postApiBaseUrlInput = document.querySelector("#postApiBaseUrl");
+      const apiKeyInput = document.querySelector("#apiKey");
+      const loadButton = document.querySelector("#loadButton");
+      const statusBox = document.querySelector("#status");
+      const listBox = document.querySelector("#list");
+
+      function showStatus(message, type) {
+        statusBox.textContent = message;
+        statusBox.className = `status ${type}`;
+        statusBox.hidden = false;
+      }
+
+      function clearStatus() {
+        statusBox.hidden = true;
+        statusBox.textContent = "";
+      }
+
+      async function parseError(response, fallback) {
+        const body = await response.json().catch(() => null);
+        return typeof body?.detail === "string" ? body.detail : fallback;
+      }
+
+      async function issueAccessToken(apiKey) {
+        const response = await fetch(authApiBaseUrlInput.value.trim(), {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(await parseError(response, "액세스 토큰 발급에 실패했습니다."));
+        }
+
+        return response.json();
+      }
+
+      async function loadPosts(accessToken) {
+        const response = await fetch(postApiBaseUrlInput.value.trim(), {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(await parseError(response, "게시글 목록을 불러오지 못했습니다."));
+        }
+
+        return response.json();
+      }
+
+      function renderPosts(posts) {
+        if (!posts.length) {
+          listBox.innerHTML = '<div class="empty">등록된 게시글이 없습니다.</div>';
+          return;
+        }
+
+        listBox.innerHTML = posts
+          .map(
+            (post) => `
+              <article class="post">
+                <h2 class="post-title">${escapeHtml(post.title)}</h2>
+                <div class="post-meta">
+                  <span>작성자: ${escapeHtml(post.author)}</span>
+                  <span>ID: ${escapeHtml(post.id)}</span>
+                  <span>수정일: ${new Date(post.updated_at).toLocaleString("ko-KR")}</span>
+                </div>
+                <p class="post-content">${escapeHtml(post.content)}</p>
+              </article>
+            `,
+          )
+          .join("");
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      loadButton.addEventListener("click", async () => {
+        const apiKey = apiKeyInput.value.trim();
+
+        if (!authApiBaseUrlInput.value.trim()) {
+          showStatus("토큰 API 주소를 입력하세요.", "error");
+          return;
+        }
+
+        if (!postApiBaseUrlInput.value.trim()) {
+          showStatus("게시글 API 주소를 입력하세요.", "error");
+          return;
+        }
+
+        if (!apiKey) {
+          showStatus("API 키를 입력하세요.", "error");
+          return;
+        }
+
+        loadButton.disabled = true;
+        clearStatus();
+        listBox.innerHTML = '<div class="empty">불러오는 중...</div>';
+
+        try {
+          const token = await issueAccessToken(apiKey);
+          const posts = await loadPosts(token.access_token);
+          renderPosts(posts);
+          showStatus("게시글 목록을 불러왔습니다.", "success");
+        } catch (error) {
+          listBox.innerHTML = '<div class="empty">목록을 표시할 수 없습니다.</div>';
+          showStatus(error instanceof Error ? error.message : "요청 처리에 실패했습니다.", "error");
+        } finally {
+          loadButton.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

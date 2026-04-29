@@ -141,6 +141,8 @@ Authorization: Bearer {ACCESS_TOKEN}`,
 ];
 
 function ApiDocsPage() {
+  const currentOrigin = window.location.origin;
+
   return (
     <main className="page-shell">
       <section className="docs-viewer" aria-labelledby="docs-title">
@@ -170,7 +172,8 @@ function ApiDocsPage() {
                   <tr>
                     <th>URL</th>
                     <td>
-                      [{endpoint.method}] {endpoint.url}
+                      [{endpoint.method}] {currentOrigin}
+                      {endpoint.url}
                     </td>
                   </tr>
                 </tbody>

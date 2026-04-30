@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -241,10 +241,6 @@
             <span>토큰 API 주소</span>
             <input id="authApiBaseUrl" type="text" value="" placeholder="토큰 발급 URL 기준 주소" />
           </label>
-          <label>
-            <span>API 키</span>
-            <input id="apiKey" type="password" placeholder="API_KEY" autocomplete="off" />
-          </label>
           <button id="loadButton" type="button">목록 조회</button>
           <label class="full-row">
             <span>게시글 리스트 API 주소</span>
@@ -254,7 +250,7 @@
 
         <p id="status" class="status" hidden></p>
         <div id="list" class="list">
-          <div class="empty">API 키를 입력하고 목록을 조회하세요.</div>
+          <div class="empty">목록 조회 버튼을 눌러 게시글을 불러오세요.</div>
         </div>
       </section>
     </main>
@@ -262,7 +258,6 @@
     <script>
       const authApiBaseUrlInput = document.querySelector("#authApiBaseUrl");
       const postApiBaseUrlInput = document.querySelector("#postApiBaseUrl");
-      const apiKeyInput = document.querySelector("#apiKey");
       const loadButton = document.querySelector("#loadButton");
       const statusBox = document.querySelector("#status");
       const listBox = document.querySelector("#list");
@@ -284,10 +279,11 @@
       }
 
       async function issueAccessToken(apiKey) {
+        const activeApiKey = apiKey || "helloworld";
         const response = await fetch(authApiBaseUrlInput.value.trim(), {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${apiKey}`,
+            Authorization: `Bearer ${activeApiKey}`,
           },
         });
 
@@ -345,7 +341,6 @@
       }
 
       loadButton.addEventListener("click", async () => {
-        const apiKey = apiKeyInput.value.trim();
 
         if (!authApiBaseUrlInput.value.trim()) {
           showStatus("토큰 API 주소를 입력하세요.", "error");
@@ -357,18 +352,14 @@
           return;
         }
 
-        if (!apiKey) {
-          showStatus("API 키를 입력하세요.", "error");
-          return;
-        }
-
         loadButton.disabled = true;
         clearStatus();
         listBox.innerHTML = '<div class="empty">불러오는 중...</div>';
 
         try {
-          const token = await issueAccessToken(apiKey);
-          const posts = await loadPosts(token.access_token);
+          const token = await issueAccessToken("");
+          const result = await loadPosts(token.access_token);
+          const posts = Array.isArray(result) ? result : result.items;
           renderPosts(posts);
           showStatus("게시글 목록을 불러왔습니다.", "success");
         } catch (error) {
@@ -381,3 +372,5 @@
     </script>
   </body>
 </html>
+
+

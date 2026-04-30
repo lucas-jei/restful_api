@@ -42,5 +42,15 @@ class PostRead(BaseModel):
     title: str
     content: str
     author: str
+    attachment_filename: str | None
+    attachment_content_type: str | None
     created_at: datetime
     updated_at: datetime
+
+
+class PostPage(BaseModel):
+    items: list[PostRead]
+    total_count: int
+    total_pages: int
+    page: int
+    size: int

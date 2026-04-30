@@ -1,11 +1,14 @@
 import { parseErrorMessage } from "./client";
 import type { AccessTokenResponse } from "../types/auth";
 
+const defaultApiKey = "helloworld";
+
 export async function issueAccessToken(apiKey: string) {
+  const activeApiKey = apiKey.trim() || defaultApiKey;
   const response = await fetch("/api/auth/access-token", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${activeApiKey}`,
     },
   });
 

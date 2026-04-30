@@ -8,7 +8,6 @@ import StatusMessage from "../components/StatusMessage";
 import type { Post } from "../types/post";
 
 const initialForm: PostCreateFormState = {
-  apiKey: "",
   title: "",
   author: "",
   content: "",
@@ -23,7 +22,6 @@ function CreatePostPage() {
 
   const canSubmit = useMemo(() => {
     return (
-      form.apiKey.trim().length > 0 &&
       form.title.trim().length > 0 &&
       form.author.trim().length > 0 &&
       form.content.trim().length > 0 &&
@@ -43,7 +41,7 @@ function CreatePostPage() {
     setIsSubmitting(true);
 
     try {
-      const { access_token } = await issueAccessToken(form.apiKey.trim());
+      const { access_token } = await issueAccessToken("");
       const post = await createPost(access_token, {
         title: form.title.trim(),
         author: form.author.trim(),
@@ -58,7 +56,7 @@ function CreatePostPage() {
         content: "",
       }));
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.");
+      setErrorMessage(error instanceof Error ? error.message : "게시글 등록에 실패했습니다.");
     } finally {
       setIsSubmitting(false);
     }

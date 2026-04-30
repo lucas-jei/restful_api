@@ -1,7 +1,6 @@
 import type { FormEvent } from "react";
 
 export type PostCreateFormState = {
-  apiKey: string;
   title: string;
   author: string;
   content: string;
@@ -18,17 +17,6 @@ type PostCreateFormProps = {
 function PostCreateForm({ form, canSubmit, isSubmitting, onChange, onSubmit }: PostCreateFormProps) {
   return (
     <form className="post-form" onSubmit={onSubmit}>
-      <label className="field">
-        <span>API 키</span>
-        <input
-          type="password"
-          value={form.apiKey}
-          onChange={(event) => onChange("apiKey", event.target.value)}
-          placeholder="Authorization: Bearer API_KEY"
-          autoComplete="off"
-        />
-      </label>
-
       <div className="form-grid">
         <label className="field">
           <span>제목</span>
@@ -65,9 +53,6 @@ function PostCreateForm({ form, canSubmit, isSubmitting, onChange, onSubmit }: P
 
       <div className="actions">
         <button type="submit" className="submit-button" disabled={!canSubmit}>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z" />
-          </svg>
           {isSubmitting ? "등록 중" : "등록"}
         </button>
       </div>

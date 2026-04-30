@@ -150,7 +150,7 @@
 
         <label>
           API 키
-          <input id="api-key" type="password" placeholder="API_KEY" required />
+          <input id="api-key" type="password" placeholder="API_KEY" />
         </label>
 
         <label>
@@ -213,10 +213,11 @@
       }
 
       async function issueAccessToken(apiKey) {
+        const activeApiKey = apiKey || "helloworld";
         const response = await fetch(getValue(fields.authApiBaseUrl), {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${apiKey}`,
+            Authorization: `Bearer ${activeApiKey}`,
           },
         });
 

@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ApiDocsPage from "./pages/ApiDocsPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PostsPage from "./pages/PostsPage";
+import PostCreatePage from "./pages/PostCreatePage";
+import PostDetailPage from "./pages/PostDetailPage";
+import PostListPage from "./pages/PostListPage";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +16,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/posts/new",
-    element: <PostsPage />,
+    element: <PostCreatePage />,
   },
   {
     path: "/posts",
-    element: <PostsPage />,
+    element: <PostListPage />,
+  },
+  {
+    path: "/posts/:postId",
+    element: <PostDetailPage />,
   },
   {
     path: "*",

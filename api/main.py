@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from config import get_csv_env, get_env
 from database import Base, engine
@@ -25,6 +26,10 @@ app.include_router(posts.router)
 @app.on_event("startup")
 def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
+    with engine.begin() as connection:
+        connection.execute(text("ALTER TABLE posts ADD COLUMN IF NOT EXISTS attachment_filename VARCHAR(255)"))
+        connection.execute(text("ALTER TABLE posts ADD COLUMN IF NOT EXISTS attachment_content_type VARCHAR(255)"))
+        connection.execute(text("ALTER TABLE posts ADD COLUMN IF NOT EXISTS attachment_path VARCHAR(500)"))
 
 
 @app.get("/health")
